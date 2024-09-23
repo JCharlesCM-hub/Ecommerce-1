@@ -557,6 +557,26 @@ progress {
   }
 }
 
+.quadrado_deixa_imagem_mesmo_tamanho {
+  width: 100%;
+  padding-top: 60%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 6%;
+  border: 0px solid #1B1B1B2d;
+}
+
+.img_mesmo_tamanho {
+  width: 100%;         /* Faz a imagem ocupar toda a largura do contêiner */
+  height: auto;        /* Mantém a proporção da imagem */
+  max-width: 200px;    /* Define um limite máximo de largura */
+  max-height: 200px;   /* Define um limite máximo de altura */
+  object-fit: contain; /* Mantém a imagem dentro do espaço, preservando a proporção */
+}
+
 .list-unstyled {
   padding-left: 0;
   list-style: none;
@@ -10824,3 +10844,4 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+
