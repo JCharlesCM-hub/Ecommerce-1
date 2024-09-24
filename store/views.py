@@ -1,11 +1,25 @@
 from django.shortcuts import render, redirect
-from .models import Product
+from .models import Product, Category
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm
 from django import forms
+
+
+def category(request, foo):
+    # Substituir hifens por espaços
+    foo = foo.raplace('-', ' ')
+    # Pega a categoria da url
+    try:
+        # Procura a Categoria
+        category = Category.objects.get(name=foo)
+        products = Product.objects.filter(category=category)
+        return render(request, 'category.html', {'products':products, 'category':category})
+    except:
+        messages.success(request, ("Essa categoria não existe..."))
+        return redirect('home')
 
 def product(request,pk):
     product = Product.objects.get(id=pk)
