@@ -32,17 +32,42 @@
                         RS R$ {{ product.sale_price }}</b>
 
                     {% else %}
-                        R$ {{ product.price }}
+                        R$ {{ product.price }}git 
                     {% endif %}
 
                     <br/><br/>
-                    <a href="{% url 'home' %}" class="btn btn-secondary">  Home 
-                    </a>
+                    <a href="{% url 'home' %}" class="btn btn-secondary">  Home </a>
+                    <button type="button" value="{{ product.id }}" class=" btn btn-secondary" id="add-cart">Adicionar ao Carrinho</button>
                     </center>
                 </div>
             </div>
         </div>
     </div>        
 </div>
+
+<script>
+// Checa se o botão foi pressionado
+$(document).on('click', '#add-cart', function(e){
+    e.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url: '{% url 'cart_add' %}',
+
+        data: {
+            product_id: $('#add-cart').val(),  // Corrige o seletor aqui
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post'
+        },
+
+        success: function(json){
+            console.log(json)
+        },
+
+        error: function(xhr, errmsg, err){}
+
+    });
+})
+
+</script>
 
 {% endblock %}
