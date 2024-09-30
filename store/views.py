@@ -7,18 +7,16 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm
 from django import forms
 
-
 def category(request, foo):
-    # Substituir hifens por espaços
-    foo = foo.raplace('-', ' ')
-    # Pega a categoria da url
-    try:
-        # Procura a Categoria
+    # Tira traço e insere espaço
+    foo = foo.replace('-', ' ')
+    try: 
+        # Look Up The Category
         category = Category.objects.get(name=foo)
         products = Product.objects.filter(category=category)
         return render(request, 'category.html', {'products':products, 'category':category})
     except:
-        messages.success(request, ("Essa categoria não existe..."))
+        messages.success(request, ("Opa! Essa Categoria não existe."))
         return redirect('home')
 
 def product(request,pk):
