@@ -52,7 +52,6 @@ $(document).on('click', '#add-cart', function(e){
     $.ajax({
         type: 'POST',
         url: '{% url 'cart_add' %}',
-
         data: {
             product_id: $('#add-cart').val(),  // Corrige o seletor aqui
             csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -67,7 +66,6 @@ $(document).on('click', '#add-cart', function(e){
 
     });
 })
-
 </script>
 
 {% endblock %}
