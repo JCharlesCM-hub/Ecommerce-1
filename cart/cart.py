@@ -42,7 +42,24 @@ class Cart():
         # Return those looked up products
         return products
 
-def get_quants(self):
-    quantities = self.cart
-    return quantities
+    def get_quants(self):
+        quantities = self.cart
+        return quantities
+    
+    def update(self, product, quantity):
+        product_id = str(product)
+        product_qty = int(quantity)
+
+        # Get cart
+        ourcart = self.cart
+        # Update Dictionary
+        ourcart[product_id] = product_qty
+
+        self.session.modified = True
+
+        thing = self.cart
+        return thing
+    
+    
+
 
