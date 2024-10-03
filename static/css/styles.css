@@ -577,6 +577,15 @@ progress {
   object-fit: contain; /* Mantém a imagem dentro do espaço, preservando a proporção */
 }
 
+
+.img_pequena {
+  width: 80%;         /* Faz a imagem ocupar toda a largura do contêiner */
+  height: auto;        /* Mantém a proporção da imagem */
+  max-width: 300px;    /* Define um limite máximo de largura */
+  max-height: 300px;   /* Define um limite máximo de altura */
+  object-fit: contain; /* Mantém a imagem dentro do espaço, preservando a proporção */
+}
+
 .list-unstyled {
   padding-left: 0;
   list-style: none;
