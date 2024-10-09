@@ -6,8 +6,8 @@
 <header class="bg-dark py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Shopping Card</h1>
-            <p class="lead fw-normal text-white-50 mb-0">Página de seu Cart...</p>
+            <h1 class="display-4 fw-bolder">Shopping Card - Carrinho de Compras</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Página do seu Carrinho...</p>
         </div>
     </div>
 </header>
@@ -15,6 +15,7 @@
 
 
 <div class="conteiner">
+    <!-- Se existir produtos no cart    -->
     {% if cart_products %}  
         {% for product in cart_products %}
           
@@ -26,7 +27,7 @@
                     <div class="col-md-8">
         
                         <div class="card-body">
-                            <center>
+ 
                             <h5 class="card-title">{{ product.name }}</h5>
                             <p class="card-text justified">{{ product.description }}</p>
         
@@ -50,7 +51,7 @@
                                 R$ {{ product.price }}
                             {% endif %}
                             <br/><br/>
-                            <div class="row justify-content-center">
+                            <div class="row justify-content-start">
                                 <div class="col-md-2"> Quantity: </div>
                                 <div class="col-md-2">
                                     <select class="form-select form-select-sm" id="select{{product.id}}">
@@ -76,7 +77,6 @@
 
                             <button type="button" data-index="{{product.id}}" class="btn btn-danger delete-product"> Remove </button>
 
-                            </center>
                         </div>
                     </div>
                 </div>
@@ -89,9 +89,12 @@
         <br><br>  
 
     {% else %}
+
     <center>
         There's Nothing In Your Cart... <br>
-        Não há nada no seu carrinho...
+        Não há produto no seu carrinho...  <br><br>
+        <a href="{% url 'home' %}" class="btn btn-secondary">  Home </a>
+
         <br><br><br><br><br><br>
     </center>        
     {% endif %}  

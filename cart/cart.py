@@ -79,7 +79,7 @@ class Cart():
 
         # Get cart
         ourcart = self.cart
-        # Update Dictionary
+        # Update Dictionary/cart
         ourcart[product_id] = product_qty
 
         self.session.modified = True
