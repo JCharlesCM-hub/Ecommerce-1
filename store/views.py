@@ -17,8 +17,7 @@ def update_user(request):
             login(request, current_user)
             messages.success(request, "Usuário foi alterado!!")
             return redirect('home')
-        
-        return render(request, 'update_user.html', {user_form:user_form})
+        return render(request, 'update_user.html', {'user_form':user_form})
     else:
         messages.success(request, "Você pricisa está Logado para Acessar!!")
         return redirect('home')
