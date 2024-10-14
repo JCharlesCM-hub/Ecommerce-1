@@ -4,16 +4,60 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm
+from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm, UserInfoForm
 from django import forms
+from .models import Profile
+from django.db.models import Q
+
+
+def search(request):
+    # Determine if they filled out the form
+    if request.method == "POST":
+        searched = request.POST['searched']
+        # Query the Products DB Model
+        searched = Product.objects.filter(Q(name__icontains=searched) | Q(description__icontains=searched))
+        # Test for Null
+        if not searched:
+            messages.success(request, "Produto não existe. Por favor tente novamente!!")
+            return render(request, "search.html", {})
+        else: 
+            return render(request, "search.html", {'searched':searched})
+    else:
+        return render(request, "search.html", {})
+
+
+def update_info(request):
+    if request.user.is_authenticated:
+        current_user = Profile.objects.get(user__id=request.user.id)
+        form = UserInfoForm(request.POST or None, instance=current_user)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your Info Has Been Update!!")
+            return redirect('home')
+        return render(request, 'update_info.html', {'form':form})
+    else:
+        messages.success(request, "Você pricisa está Logado para Acessar!!")
+        return redirect('home')
+
 
 def update_password(request):
-    if request.user.is_autenticated:
+    if request.user.is_authenticated:
         current_user = request.user
         # Did they fill out the form
         if request.method == 'POST':
-            # do stuff
-            pass
+            form = ChangePasswordForm(current_user, request.POST)
+            # Is the form valid
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Your Password Has Been Update...")
+                login(request, current_user)
+                return redirect('update_password')
+            else:
+                for error in list(form.errors.values()):
+                    messages.error(request, error)
+                    return redirect('update_password')
+          
         else:
             form = ChangePasswordForm(current_user)
             return render(request, 'update_password.html', {'form':form})
@@ -101,8 +145,8 @@ def register_user(request):
             # log in user
             user = authenticate(username=username, password=password)
             login(request, user)
-            messages.success(request, ("Você se registrou com sucesso!!! Seja bem-vindo."))
-            return redirect("home")
+            messages.success(request, ("Username Created - Please Fill Out Your User Info Below..."))
+            return redirect("update_info")
         else:
             messages.success(request, ("Opa! Houve um problema ao registrar, tente novamente."))
             return redirect('register')
