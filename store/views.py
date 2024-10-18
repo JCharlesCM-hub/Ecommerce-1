@@ -8,6 +8,8 @@ from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm, UserInfoForm
 from django import forms
 from .models import Profile
 from django.db.models import Q
+import json
+from cart.cart import Cart
 
 
 def search(request):
@@ -121,6 +123,23 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            # Do some shopping cart stuff - Faça algumas coisas no carrinho de compras
+            current_user = Profile.objects.get(user__id=request.user.id)
+            # Get their saved cart from database = Obtenha o carrinho salvo do banco de dados
+            saved_cart = current_user.old_cart
+            # Convert database string to python dictionary = Converte string do banco de dados em dicionário python
+            if saved_cart:
+                # Convert to dictionary using JSON
+                converted_cart = json.loads(saved_cart)
+                # Add the loaded cart dictionary to our session
+                # Get the cart
+                cart = Cart(request)
+                # Loop thru the cart and the items from the database
+                # Tuplas {"3":2, "4":1}
+                for key,value in converted_cart.items():
+                    cart.db_add(product=key, quantity=value)
+
+
             messages.success(request,("Você está conectado!"))
             return redirect('home')
         else:

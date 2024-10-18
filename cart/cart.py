@@ -1,8 +1,10 @@
-from store.models import Product
+from store.models import Product, Profile
 
 class Cart():
     def __init__(self, request):
         self.session = request.session
+        # Get request
+        self.request = request
         
         # get the current session key if it exists
         # obter a chave de sessão atual se existir
@@ -17,6 +19,28 @@ class Cart():
         # Certifique-se de que o carrinho esteja disponível em todas as páginas do site
         self.cart = cart
 
+    def db_add(self, product, quantity):
+        product_id = str(product)
+        product_qty = str(quantity)
+        # Logic
+        if product_id in self.cart:
+            pass
+        else:
+            # self.cart[product_id] = {'price': str(product.price)}
+            self.cart[product_id] = int(product_qty)          
+
+        self.session.modified = True
+
+        # Deal with logged in user -- Lidar com usuário logado
+        if self.request.user.is_authenticated:
+            # Get the current user profile -- Obtenha o perfil do usuário atual.
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            # Convert {'3':1, '2':4} to {"3":1, "2":4} -- Tupla de product_id e quantidade
+            carty = str(self.cart)
+            carty = carty.replace("\'", "\"")
+            # SAve carty to the Profile Model -- Salve carty no modelo de perfil
+            current_user.update(old_cart=str(carty))
+
 
     def add(self, product, quantity):
         product_id = str(product.id)
@@ -30,6 +54,16 @@ class Cart():
             self.cart[product_id] = int(product_qty)          
 
         self.session.modified = True
+
+        # Deal with logged in user -- Lidar com usuário logado
+        if self.request.user.is_authenticated:
+            # Get the current user profile -- Obtenha o perfil do usuário atual.
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            # Convert {'3':1, '2':4} to {"3":1, "2":4} -- Tupla de product_id e quantidade
+            carty = str(self.cart)
+            carty = carty.replace("\'", "\"")
+            # SAve carty to the Profile Model -- Salve carty no modelo de perfil
+            current_user.update(old_cart=str(carty))
 
 
     def cart_total(self):
@@ -84,6 +118,16 @@ class Cart():
 
         self.session.modified = True
 
+       # Deal with logged in user -- Lidar com usuário logado
+        if self.request.user.is_authenticated:
+            # Get the current user profile -- Obtenha o perfil do usuário atual.
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            # Convert {'3':1, '2':4} to {"3":1, "2":4} -- Tupla de product_id e quantidade
+            carty = str(self.cart)
+            carty = carty.replace("\'", "\"")
+            # SAve carty to the Profile Model -- Salve carty no modelo de perfil
+            current_user.update(old_cart=str(carty))
+
         thing = self.cart
         return thing
     
@@ -97,4 +141,12 @@ class Cart():
 
         self.session.modified = True
 
-
+       # Deal with logged in user -- Lidar com usuário logado
+        if self.request.user.is_authenticated:
+            # Get the current user profile -- Obtenha o perfil do usuário atual.
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            # Convert {'3':1, '2':4} to {"3":1, "2":4} -- Tupla de product_id e quantidade
+            carty = str(self.cart)
+            carty = carty.replace("\'", "\"")
+            # SAve carty to the Profile Model -- Salve carty no modelo de perfil
+            current_user.update(old_cart=str(carty))
