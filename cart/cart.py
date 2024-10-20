@@ -85,8 +85,8 @@ class Cart():
                         total = total + (product.sale_price * value)
                     else:
                         total = total + (product.price * value)
-            
-            return total
+        # Pega o valor de todas os produtos do carrinho    
+        return total
 
 
     def __len__(self):

@@ -28,7 +28,7 @@
         
                         <div class="card-body">
  
-                            <h5 class="card-title">{{ product.name }}</h5>
+                            <h5 class="card-title">{{ product.name }} </h5>
                             <p class="card-text justified">{{ product.description }}</p>
         
                             {% if product.is_sale %}
@@ -85,15 +85,19 @@
         {% endfor %}
 
         <br><br>
-        <h3> Total: R$ {{ totals }} </h3>
-        <br><br>  
+        <div align="right">
+            <h3> Total: R$ {{ totals }} </h3>
+            <a href="{% url 'checkout' %}" class="btn-success"> 
+                Checkout 
+            </a>
+            <br><br>  
+        </div>
 
-    {% else %}
+
 
     <center>
         There's Nothing In Your Cart... <br>
         Não há produto no seu carrinho...  <br><br>
-        <a href="{% url 'home' %}" class="btn btn-secondary">  Home </a>
 
         <br><br><br><br><br><br>
     </center>        
