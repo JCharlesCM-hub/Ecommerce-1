@@ -60,8 +60,6 @@
             
             <div class="card-body">
                                 
- <!--  ##              {{ shipping_info }}  ###  --> 
-
                 Nome: {{ shipping_info.shipping_full_name }} <br>
                 Email:  {{ shipping_info.shipping_email }} <br>
                 Address 1: {{ shipping_info.shipping_address1 }} <br>
@@ -88,6 +86,7 @@
             </div>
 
             <div class="card-body">
+                <!-- Abre o Form Billing -->
                 <form method="POST" action="{% url 'process_order' %}">
                     {% csrf_token %}
                     {{ billing_form.as_p }}
@@ -99,7 +98,7 @@
         <button type="submit" class="btn btn-secondary"> 
             Pay NoW - Comprar Agora 
         </button>
-        
+        <!-- Fechar o Form Billing -->
         </form>
 
         <br><br>

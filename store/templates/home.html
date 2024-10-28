@@ -44,7 +44,7 @@
                                     <br/>
                                     In: {{ product.category }}
                                     <br/>
-                                    RS R$ {{ product.sale_price }} - <b>Vendida</b>
+                                    R$ {{ product.sale_price }} - <b>Vendida</b>
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -71,7 +71,9 @@
                                     <!-- Product name-->
                                     <h5 class="fw-bolder" style="color: black;">{{ product.name }}</h5>
                                     <!-- Product price-->
-                                    R$ {{ product.price }}
+                                    Preço de Compra: R$ {{ product.price }} 
+                                    <br>
+                                    Preço de Venda: R$ {{ product.sale_price }}
                                     <br/>
                                     {{ product.description }}
                                     <br/>

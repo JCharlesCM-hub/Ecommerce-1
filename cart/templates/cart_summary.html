@@ -38,17 +38,22 @@
                                     <div class="bi-star-fill"></div>
                                 </div>    
                                 <br/>
-
                                 <strike>
-                                R$ {{ product.price }}
+                                Compra: R$ {{ product.sale_price }}
+                                </strike>                                
+                                <br/>
+                                <strike>
+                                Venda: R$ {{ product.price }}
                                 </strike>
                                 <br/>
                                 In: {{ product.category }}
                                 <br/>
-                                RS R$ {{ product.sale_price }}</b>
+                                R$ {{ product.sale_price }}</b>
         
                             {% else %}
-                                R$ {{ product.price }}
+                                Compra: R$ {{ product.sale_price }}
+                                <br>
+                                Venda: R$ {{ product.price }}
                             {% endif %}
                             <br/><br/>
                             <div class="row justify-content-start">

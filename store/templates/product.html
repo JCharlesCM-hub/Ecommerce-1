@@ -24,15 +24,17 @@
                         <br/>
                         <!-- Product price-->
                         <strike>
-                        R$ {{ product.price }}
+                        Preço de Compra: R$ {{ product.price }}
                         </strike>
                         <br/>
                         In: {{ product.category }}
                         <br/>
-                        RS R$ {{ product.sale_price }}</b>
+                        Preço de Venda: R$ {{ product.sale_price }}</b>
 
                     {% else %}
-                        R$ {{ product.price }}
+                        Compra: R$ {{ product.price }}
+                        <br>
+                        Venda: R$ {{ product.sale_price }}
                     {% endif %}
                     <br/><br/><br/><br/>
                     <div class="row justify-content-center">
