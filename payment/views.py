@@ -4,7 +4,9 @@ from payment.forms import ShippingForm, PaymentForm
 from payment.models import ShippingAddress, Order, OrderItem
 from django.contrib.auth.models import User
 from django.contrib import messages
-from store.models import Product
+from store.models import Product, Profile
+import datetime
+
 
 def orders(request, pk):
     if request.user.is_authenticated and request.user.is_superuser:
@@ -12,6 +14,24 @@ def orders(request, pk):
         order = Order.objects.get(id=pk)
         # Get the orders itens
         items = OrderItem.objects.filter(order=pk)
+
+        if request.POST:
+            status = request.POST['shipping_staus']
+            # Check if true or false
+            if status == "true":
+                # Get the order
+                order = Order.objects.filter(id=pk)
+                # Update the status
+                now = datetime.datetime.now()
+                order.update(shipped=True, date_shipped=now)
+            else:
+                # Get the order
+                order = Order.objects.filter(id=pk)
+                # Update the status
+                order.update(shipped=False) 
+
+            messages.success(request, "Shipping Status Updated")               
+            return redirect('home')
 
         return render(request, "payment/orders.html", {"order":order, "items":items}) 
     else:
@@ -21,6 +41,20 @@ def orders(request, pk):
 def not_shipped_dash(request):
     if request.user.is_authenticated and request.user.is_superuser:
         orders = Order.objects.filter(shipped=False)
+
+        if request.POST:
+            status = request.POST['shipping_status']
+            num = request.POST['num']
+            # Get the order
+            order = Order.objects.filter(id=num)
+            # Grab date and time
+            now = datetime.datetime.now()
+            # Update order
+            order.update(shipped=True, date_shipped=now)
+            # Redirect
+            messages.success(request, "Shipping Status Updated")               
+            return redirect('home')
+                
         return render(request, "payment/not_shipped_dash.html", {"orders":orders}) 
     else:
         messages.success(request, "Access Danied!! Acesso Negado!!")
@@ -29,6 +63,20 @@ def not_shipped_dash(request):
 def shipped_dash(request):
     if request.user.is_authenticated and request.user.is_superuser:
         orders = Order.objects.filter(shipped=True)
+
+        if request.POST:
+            status = request.POST['shipping_status']
+            num = request.POST['num']
+            # Grab the order
+            order = Order.objects.filter(id=num)
+            # Grab date and time
+            now = datetime.datetime.now()
+            # Update order
+            order.update(shipped=False)
+            # Redirect
+            messages.success(request, "Shipping Status Updated")               
+            return redirect('home')
+                
         return render(request, "payment/shipped_dash.html", {"orders":orders}) 
     else:
         messages.success(request, "Access Danied!! Acesso Negado!!")
@@ -38,8 +86,8 @@ def process_order(request):
     if request.POST:
         # get the cart
         cart = Cart(request)
-        cart_products = cart.get_prods
-        quantities = cart.get_quants
+        cart_products = cart.get_prods()
+        quantities = cart.get_quants()
         totals = cart.cart_total()
 
         # Get Billing Info from the last page
@@ -67,6 +115,7 @@ def process_order(request):
             # Add order items
             # Get the order id -- Obter o ID do pedido
             order_id = create_order.pk
+
             # Get product Info
             for product in cart_products:
                 # Get product ID
@@ -78,7 +127,7 @@ def process_order(request):
                     price = product.price
 
                 # Get quantity
-                for key, value in quantities().items():
+                for key, value in quantities.items():
                     if int(key) == product.id:
                         # Create order item
                         create_order_item = OrderItem(order_id=order_id, product_id=product_id, user=user, quantity=value, price=price)
@@ -90,11 +139,13 @@ def process_order(request):
                     # Delete the Key
                     del request.session[key]
 
-
+            # Delete Cart from Database (old_cart field)
+            current_user = Profile.objects.filter(user__id=request.user.id)
+            # Delete shopping cart in database (old_cart field)
+            current_user.update(old_cart="")
 
             messages.success(request, "Order Placed! Pedido realizado!")
             return redirect('home')
-
 
         else:
              # Create Order
