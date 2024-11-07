@@ -208,7 +208,7 @@ def billing_info(request):
             # Not logged in
             # Get the Billing Form
             billing_form = PaymentForm()
-            return render(request, "payment/billing_info.html", {"cart_products":cart_products, "quantities":quantities, "totals":totals, "shipping_form":request.POST, "billing_form":billing_form })  
+            return render(request, "payment/billing_info.html", {"cart_products":cart_products, "quantities":quantities, "totals":totals, "shipping_info":request.POST, "billing_form":billing_form })  
 
 #        shipping_form = ShippingForm(request.POST or None)
 #        return render(request, "payment/billing_info.html", {"cart_products":cart_products, "quantities":quantities, "totals":totals, "shipping_form":shipping_form})   

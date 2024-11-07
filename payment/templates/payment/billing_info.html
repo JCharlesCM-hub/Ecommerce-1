@@ -79,25 +79,25 @@
         </div>
         
         <br><br>
+        <!-- Abre o Form Billing -->
+        <form method="POST" action="{% url 'process_order' %}">
 
-        <div class="card">
-            <div class="card-header">
-                Billing Info
+            <div class="card">
+                <div class="card-header">
+                    Billing Info
+                </div>
+
+                <div class="card-body">
+                        {% csrf_token %}
+                        {{ billing_form.as_p }}
+                </div>    
             </div>
 
-            <div class="card-body">
-                <!-- Abre o Form Billing -->
-                <form method="POST" action="{% url 'process_order' %}">
-                    {% csrf_token %}
-                    {{ billing_form.as_p }}
-            </div>    
-        </div>
-
-       
-        <br><br>
-        <button type="submit" class="btn btn-secondary"> 
-            Pay NoW - Comprar Agora 
-        </button>
+        
+            <br><br>
+            <button type="submit" class="btn btn-secondary"> 
+                Pay NoW - Comprar Agora 
+            </button>
         <!-- Fechar o Form Billing -->
         </form>
 
